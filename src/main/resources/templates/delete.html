@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+{{ > include/header }}
+
+<body>
+
+<div class="d-flex" id="wrapper">
+    {{> include/sidebar }}
+
+    <div id="page-content-wrapper">
+        {{> include/navbar }}
+        <div class="container-fluid">
+            <div class="container">
+                {{#loginAccount}}
+                <div>회원탈퇴를 하기 위해 비밀번호를 입력해주세요</div>
+                <form class="container mt-3" style="max-width: 500px" method="post" action="/delete">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="id" value={{id}}>
+                    <label>비밀번호</label>
+                    <input class="form-control" name="password" type="password">
+                    <button class="btn btn-primary float-text-right" type="submit">완료</button>
+                </form>
+                {{/loginAccount}}
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /#page-content-wrapper -->
+
+{{> include/footer }}
+</body>
+
+</html>
