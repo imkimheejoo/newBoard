@@ -24,9 +24,9 @@
                 {{#questions}}
                 <tr>
                     <th scope="row">{{id}}</th>
-                    <td><a href="/question/contents/{{id}}">{{title}}</a></td>
+                    <td><a href="/board/{{id}}">{{title}}</a></td>
                     <td>{{writer.name}}</td>
-                    <td>{{modifiedDate}}</td>
+                    <td>{{formattedModifiedDate}}</td>
                 </tr>
                 {{/questions}}
                 </tbody>

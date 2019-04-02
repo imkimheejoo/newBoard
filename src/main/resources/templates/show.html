@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+{{ > include/header }}
+
+<body>
+
+<div class="d-flex" id="wrapper">
+    {{> include/sidebar }}
+
+    <div id="page-content-wrapper">
+        {{> include/navbar }}
+        <div class="container-fluid">
+            <div class="container mt-10">
+                {{#question}}
+                <div class="form-group">
+                    <label>글 제목</label>
+                    <div type="text" class="form-control">{{title}}</div>
+                </div>
+
+                <div class="form-group">
+                    <label>글 내용</label>
+                    <textarea readonly="readonly" class="form-control" rows="10">{{content}}</textarea>
+                </div>
+
+                <div class="text-right">
+                    <a href="/board/delete/{{id}}"><button class="btn btn-primary">삭제</button></a>
+                    <a href="/board/update/{{id}}"><button class="btn btn-primary">수정</button></a>
+                    <a href="/board">
+                        <button class="btn btn-primary" type="button">목록</button>
+                    </a>
+                </div>
+                {{/question}}
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+    {{> include/footer }}
+</body>
+
+</html>

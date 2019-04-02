@@ -20,6 +20,9 @@
                     <input type="hidden" name="id" value={{id}}>
                     <label>비밀번호</label>
                     <input class="form-control" name="password" type="password">
+                    {{#failDelete}}
+                    <div class="btn btn-outline-danger mt-2">{{failDelete}}</div>
+                    {{/failDelete}}
                     <button class="btn btn-primary mt-2" type="submit">완료</button>
                 </form>
                 {{/loginAccount}}

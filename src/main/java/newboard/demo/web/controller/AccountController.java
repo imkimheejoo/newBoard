@@ -1,10 +1,9 @@
 package newboard.demo.web.controller;
 
-import newboard.demo.web.domain.Account;
-import newboard.demo.web.domain.AccountRepository;
-import newboard.demo.web.domain.HttpSessionUtils;
+import newboard.demo.web.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -53,15 +52,15 @@ public class AccountController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String accountId, @RequestParam String password,HttpSession session){
+    public String login(@RequestParam String accountId, @RequestParam String password,HttpSession session,Model model){
         Account loginAccount = accountRepository.findByAccountId(accountId);
 
         if(loginAccount==null){
-            System.out.println("유효하지 않은 아이디 입니다.");
+            model.addAttribute("fail","유효하지 않은 아이디 입니다.");
             return "login";
         }
         if(!loginAccount.getPassword().equals(password)){
-            System.out.println("유효하지 않은 비밀번호 입니다.");
+            model.addAttribute("fail","유효하지 않은 비밀번호 입니다.");
             return "login";
         }
         System.out.println(loginAccount.getName()+"님 환영합니다!");
@@ -70,10 +69,10 @@ public class AccountController {
     }
 
     @GetMapping("/update/{id}")
-    public String createUpdate(@PathVariable Long id,HttpSession session){
+    public String createUpdate(@PathVariable Long id,HttpSession session,Model model){
 
         if(HttpSessionUtils.getLoginAccount(session)==null){
-            System.out.println("로그인 먼저하세요");
+            model.addAttribute("fail","로그인 먼저하세요");
             return "login";
         }
 
@@ -107,22 +106,22 @@ public class AccountController {
     }
 
     @GetMapping("/delete")
-    public String getDelete(HttpSession session){
+    public String getDelete(HttpSession session,Model model){
 
         if(!HttpSessionUtils.isLogin(session)){
-            System.out.println("회원탈퇴를 위해서는 로그인을 먼저해주세요.");
+            model.addAttribute("fail","회원탈퇴를 위해서는 로그인을 먼저해주세요.");
             return "login";
         }
         return "delete";
 
     }
     @DeleteMapping("/delete")
-    public String delete(@RequestParam Long id, @RequestParam String password,HttpSession session){
+    public String delete(@RequestParam Long id, @RequestParam String password, HttpSession session, Model model){
 
         Account account = accountRepository.findById(id).get();
 
         if(!account.getPassword().equals(password)){
-            System.out.println("비밀번호가 일치하지 않습니다.");
+            model.addAttribute("failDelete","비밀번호가 일치하지 않습니다.");
             return "delete";
         }
 
@@ -132,10 +131,5 @@ public class AccountController {
         System.out.println("회원을 탈퇴했습니다.");
         return "index";
     }
-
-
-
-
-
 
 }

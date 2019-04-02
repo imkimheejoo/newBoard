@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Getter
@@ -33,4 +34,19 @@ public class Question {
 
     @LastModifiedDate
     LocalDateTime modifiedDate;
+
+    public String formattedCreateDate() {
+        return formattedLocalDateTime(createDate, "yyyy년 M월 d일 a h시 m분 s초");
+    }
+
+    public String formattedModifiedDate() {
+        return formattedLocalDateTime(modifiedDate, "yyyy년 M월 d일 a h시 m분 s초");
+    }
+    public String formattedLocalDateTime(LocalDateTime dateTime, String format) {
+        if (dateTime == null) {
+            return "";
+        }
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
+        return dateTime.format(dateTimeFormatter);
+    }
 }
