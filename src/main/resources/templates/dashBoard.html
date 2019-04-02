@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+{{ > include/header }}
+
+<body>
+
+<div class="d-flex" id="wrapper">
+    {{> include/sidebar }}
+
+    <div id="page-content-wrapper">
+        {{> include/navbar }}
+        <div class="container-fluid">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#글 번호</th>
+                    <th scope="col">제목</th>
+                    <th scope="col">작성자</th>
+                    <th scope="col">등록일</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#questions}}
+                <tr>
+                    <th scope="row">{{id}}</th>
+                    <td><a href="/question/contents/{{id}}">{{title}}</a></td>
+                    <td>{{writer.name}}</td>
+                    <td>{{modifiedDate}}</td>
+                </tr>
+                {{/questions}}
+                </tbody>
+            </table>
+            <a href="board/write">
+                <button class="btn btn-primary">글쓰기</button>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- /#page-content-wrapper -->
+
+{{> include/footer }}
+</body>
+
+</html>

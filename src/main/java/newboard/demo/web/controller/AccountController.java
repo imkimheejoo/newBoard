@@ -27,7 +27,6 @@ public class AccountController {
                 .password(account.getPassword())
                 .name(account.getName())
                 .email(account.getEmail())
-                .createDate(LocalDateTime.now())
                 .build();
         System.out.println(newAccount.toString());
         accountRepository.save(newAccount);
@@ -133,6 +132,7 @@ public class AccountController {
         System.out.println("회원을 탈퇴했습니다.");
         return "index";
     }
+
 
 
 
