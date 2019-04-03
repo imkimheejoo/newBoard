@@ -36,4 +36,6 @@ public class AnswerController {
         answerRepository.save(newAnswer);
         return "redirect:/board/{id}";
     }
+
+
 }

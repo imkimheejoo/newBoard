@@ -51,15 +51,9 @@
                         <p> {{formattedModifiedDate}} </p>
                         <label><strong>내용</strong></label>
                         <p>{{answer}}</p>
-                        <div class="mt-2 ml-2 row">
-                            <form action="/board/update/{id}" method="post">
-                                <input type="hidden" name="_method" value="PUT">
-                                <button class="btn btn-primary mr-1" type="submit">수정</button>
-                            </form>
-                            <form action="/board/delete/{id}" method="post">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button class="btn btn-primary mr-1" type="submit">삭제</button>
-                            </form>
+                        <div class="mt-2 ml-2 row text-right">
+                                <a href="/board/update/{id}"><button class="btn btn-primary mr-1">수정</button></a>
+                                <a href="/board/delete/{id}"><button class="btn btn-primary">삭제</button></a>
                         </div>
                     </div>
                 </div>
