@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,20 +21,24 @@ import java.time.format.DateTimeFormatter;
 public class Question {
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    String title;
+    private String title;
     @Lob
-    String content;
+    private String content;
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(name = "fk_question_writer"))
-    Account writer;
+    private Account writer;
 
     @CreatedDate
-    LocalDateTime createDate;
+    private LocalDateTime createDate;
 
     @LastModifiedDate
-    LocalDateTime modifiedDate;
+    private LocalDateTime modifiedDate;
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answerList;
+
 
     public String formattedCreateDate() {
         return formattedLocalDateTime(createDate, "yyyy년 M월 d일 a h시 m분 s초");
