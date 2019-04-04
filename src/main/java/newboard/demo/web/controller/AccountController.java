@@ -60,10 +60,11 @@ public class AccountController {
             model.addAttribute("fail","유효하지 않은 아이디 입니다.");
             return "login";
         }
-        if(!loginAccount.getPassword().equals(password)){
+        if(!loginAccount.matchPassword(password)){
             model.addAttribute("fail","유효하지 않은 비밀번호 입니다.");
             return "login";
         }
+
         System.out.println(loginAccount.getName()+"님 환영합니다!");
         session.setAttribute(HttpSessionUtils.ACCOUNT_SESSION_KEY,loginAccount);
         return "index";
@@ -77,9 +78,9 @@ public class AccountController {
             return "login";
         }
 
-        Account account = accountRepository.findById(id).get();
+        Account loginAccount = HttpSessionUtils.getLoginAccount(session);
 
-        if(account.getId()!=HttpSessionUtils.getLoginAccount(session).getId()){
+        if(loginAccount.matchId(id)){
             System.out.println("예외사항:타인의 정보를 수정하려함");
             return "index";
         }
@@ -94,7 +95,6 @@ public class AccountController {
         origin.setPassword(update.getPassword());
         origin.setName(update.getName());
         origin.setEmail(update.getEmail());
-        origin.setModifiedDate(LocalDateTime.now());
 
         accountRepository.save(origin);
 
@@ -121,7 +121,7 @@ public class AccountController {
 
         Account account = accountRepository.findById(id).get();
 
-        if(!account.getPassword().equals(password)){
+        if(!account.matchPassword(password)){
             model.addAttribute("failDelete","비밀번호가 일치하지 않습니다.");
             return "delete";
         }

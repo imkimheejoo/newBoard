@@ -18,10 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Question {
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Question extends AbstractEntity{
 
     private String title;
     @Lob
@@ -39,19 +36,4 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private List<Answer> answerList;
 
-
-    public String formattedCreateDate() {
-        return formattedLocalDateTime(createDate, "yyyy년 M월 d일 a h시 m분 s초");
-    }
-
-    public String formattedModifiedDate() {
-        return formattedLocalDateTime(modifiedDate, "yyyy년 M월 d일 a h시 m분 s초");
-    }
-    public String formattedLocalDateTime(LocalDateTime dateTime, String format) {
-        if (dateTime == null) {
-            return "";
-        }
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
-        return dateTime.format(dateTimeFormatter);
-    }
 }
