@@ -56,6 +56,15 @@ public class AnswerController {
         model.addAttribute("origin",answer);
         return "updateAnswer";
     }
+    @PutMapping("/update/{questionId}/{id}")
+    public String update(@PathVariable Long questionId, @PathVariable Long id,@RequestParam String answer){
+        Answer origin = answerRepository.findById(id).get();
+        origin.setAnswer(answer);
+        answerRepository.save(origin);
+
+        return "redirect:/board/{questionId}";
+    }
+
     @GetMapping("/delete/{questionId}/{id}")
     public String deleteAnswer(@PathVariable Long questionId,@PathVariable Long id, HttpSession session,Model model){
         Result valid = isValid(id,session);
@@ -63,7 +72,6 @@ public class AnswerController {
             model.addAttribute("fail",valid.getErrorMessage());
             return "login";
         }
-
         answerRepository.delete(answerRepository.findById(id).get());
 
         return "redirect:/board/{questionId}";
