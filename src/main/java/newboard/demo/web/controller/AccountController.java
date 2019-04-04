@@ -21,6 +21,7 @@ public class AccountController {
 
     @PostMapping("/join")
     public String join(Account account){
+
         Account newAccount =Account.builder()
                 .accountId(account.getAccountId())
                 .password(account.getPassword())

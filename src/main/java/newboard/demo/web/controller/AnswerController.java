@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.GeneratedValue;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 @RequestMapping("/answer")
@@ -35,35 +33,38 @@ public class AnswerController {
         return "redirect:/board/{id}";
     }
 
-    @GetMapping("/update/{id}")
-    public String updateAnswer(@PathVariable Long id,HttpSession session,Model model){
+    public Result isValid(Long id,HttpSession session){
         if(!HttpSessionUtils.isLogin(session)){
-            model.addAttribute("fail","로그인을 해야 수정 하실 수 있습니다.");
-            return "login";
+            return Result.fail("로그인을 해야 수정/삭제 하실 수 있습니다.");
         }
         Account loginAccount = HttpSessionUtils.getLoginAccount(session);
         Answer answer = answerRepository.findById(id).get();
         if(!loginAccount.equals(answer.getWriter())){
-            model.addAttribute("fail","다른사용자의 답변은 수정 하실 수 없습니다.");
+            return Result.fail("다른 사용자의 답변은 수정/삭제 하실 수 없습니다.");
+        }
+        return Result.ok();
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateAnswer(@PathVariable Long id,HttpSession session,Model model){
+        Result valid = isValid(id,session);
+        if(!valid.isSuccess()){
+            model.addAttribute("fail",valid.getErrorMessage());
             return "login";
         }
+        Answer answer = answerRepository.findById(id).get();
         model.addAttribute("origin",answer);
         return "updateAnswer";
     }
     @GetMapping("/delete/{questionId}/{id}")
     public String deleteAnswer(@PathVariable Long questionId,@PathVariable Long id, HttpSession session,Model model){
-        if(!HttpSessionUtils.isLogin(session)){
-            model.addAttribute("fail","로그인을 해야 삭제 하실 수 있습니다.");
+        Result valid = isValid(id,session);
+        if(!valid.isSuccess()){
+            model.addAttribute("fail",valid.getErrorMessage());
             return "login";
         }
-        Account loginAccount = HttpSessionUtils.getLoginAccount(session);
-        Answer answer = answerRepository.findById(id).get();
 
-        if(!loginAccount.equals(answer.getWriter())){
-            model.addAttribute("fail","다른사용자의 답변은 삭제 하실 수 없습니다.");
-            return "login";
-        }
-        answerRepository.delete(answer);
+        answerRepository.delete(answerRepository.findById(id).get());
 
         return "redirect:/board/{questionId}";
     }
